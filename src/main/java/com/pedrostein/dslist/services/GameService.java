@@ -10,6 +10,7 @@ import com.pedrostein.dslist.dto.GameDTO;
 import com.pedrostein.dslist.dto.GameMinDTO;
 // import com.pedrostein.dslist.dto.GameMinDTO;
 import com.pedrostein.dslist.entities.Game;
+import com.pedrostein.dslist.projections.GameMinProjection;
 import com.pedrostein.dslist.repositories.GameRepository;
 
 //o service é responsável por implementar as regras de negócio da aplicação, ou seja, regra que deve acontecer
@@ -32,5 +33,11 @@ public class GameService {
 		 List<Game> result = gameRepository.findAll();
 		 List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
 		 return dto;
+	}
+
+	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByList(Long listId) {
+		 List<GameMinProjection> result = gameRepository.searchByList(listId);
+		 return result.stream().map(x -> new GameMinDTO(x)).toList();
 	}
 }
